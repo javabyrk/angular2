@@ -1,0 +1,495 @@
+Routing:-
+
+main.ts: -
+
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+
+import { AppModule } from "./app.module";
+
+platformBrowserDynamic().bootstrapModule(AppModule);
+
+app.module.ts: -
+
+import { NgModule } from '@angular/core';
+
+import { BrowserModule } from "@angular/platform-browser";
+
+import {FormsModule} from '@angular/forms';
+
+import { AppComponent } from './app.component';
+
+import { StudentListComponent } from "./student-list.component";
+
+import { AddStudentComponent } from "./add-student.component";
+
+import { EditStudentComponent } from "./edit-student.component";
+
+import { DeleteStudentComponent } from "./delete-student.component";
+
+import {StudentService} from './student.service';
+
+import {routing} from './app.routes';
+
+@NgModule({
+    imports: [BrowserModule,FormsModule,routing],
+    declarations: [AppComponent,StudentListComponent,AddStudentComponent,EditStudentComponent,DeleteStudentComponent],
+    providers: [StudentService],
+    bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+app.routes.ts: -
+
+import {Routes, RouterModule} from '@angular/router';
+import {StudentListComponent} from './student-list.component';
+import {AddStudentComponent} from './add-student.component';
+import {EditStudentComponent} from './edit-student.component';
+import {DeleteStudentComponent} from './delete-student.component';
+
+const routes: Routes = [
+  { path: 'list', component: StudentListComponent },
+  { path: 'add', component: AddStudentComponent },
+  { path: 'edit/:id', component: EditStudentComponent },
+  { path: 'delete/:id', component: DeleteStudentComponent },
+  { path: '', redirectTo: 'list', pathMatch: 'full'}
+];
+
+export const routing = RouterModule.forRoot(routes);
+
+app.component.ts: -
+
+import { Component, OnInit } from '@angular/core';
+
+import {Student} from './student';
+
+import {StudentService} from './student.service';
+
+@Component({
+    selector: 'project-app',
+    templateUrl: `app/app.template.html`,
+    providers: [StudentService]
+})
+
+export class AppComponent{
+}
+
+student-list.component.ts: -
+
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {Student} from './student';
+import {StudentService} from './student.service'
+
+@Component({
+  selector: 'student-list-view',
+  templateUrl: 'app/student-list.template.html'
+})
+export class StudentListComponent {
+  students: Student[];
+
+  constructor(private studentService: StudentService,
+    private router: Router
+  ) {
+    this.students = studentService.getAllStudents();
+  }
+
+  add(studentId: number) {
+    this.router.navigate(['/add']);
+  }
+
+  
+  edit(studentId: number) {
+    this.router.navigate(['/edit', studentId]);
+  }
+
+  delete(studentId: number) {
+    this.router.navigate(['/delete', studentId]);
+  }
+}
+
+add-student.component.ts: -
+
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {StudentService} from './student.service'
+
+@Component({
+  selector: 'add-student-view',
+  templateUrl: 'app/add-student.template.html'
+})
+export class AddStudentComponent {
+  studentName: string;
+
+  constructor(private studentService: StudentService,
+    private router: Router) {
+  }
+
+
+  add() {
+    this.studentService.addStudent({id: 0, name:this.studentName});
+    this.router.navigate(['/list']);
+  }
+  
+}
+
+edit-student.component: -
+
+import {Component} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+
+import {StudentService} from './student.service'
+
+@Component({
+  selector: 'edit-student-view',
+  templateUrl: 'app/edit-student.template.html'
+})
+export class EditStudentComponent {
+  studentId: number;
+  studentName: string;
+
+constructor(private studentService: StudentService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.studentId = this.route.snapshot.params['id'];
+    this.studentName = this.studentService
+      .getStudentById(this.studentId).name;
+  }
+
+ save() {
+    this.studentService.saveStudent({id: this.studentId, name:this.studentName});
+    this.router.navigate(['/list']);
+  }
+  
+}
+
+delete-student.component.ts: -
+
+import {Component} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+
+import {StudentService} from './student.service'
+
+@Component({
+  selector: 'delete-student-view',
+  templateUrl: 'app/delete-student.template.html'
+})
+export class DeleteStudentComponent {
+  studentId: number;
+  studentName: string;
+  private parSub: any;
+
+  constructor(
+    private studentService: StudentService,
+    private route: ActivatedRoute,
+    private router: Router
+  ){
+  this.studentId = this.route.snapshot.params['id'];
+        this.studentName = this.studentService
+          .getStudentById(this.studentId).name;
+  }
+
+  delete() {
+    this.studentService.deleteStudent(this.studentId);
+    this.router.navigate(['/list']);
+  }
+}
+
+student.service.ts: -
+
+import {Injectable} from '@angular/core';
+import {Student} from './student';
+
+@Injectable()
+export class StudentService {
+  private students = Student.students.slice(0);
+
+  getAllStudents(): Student[] {
+    return this.students.slice(0);
+  }
+
+  getStudentById(id: number): Student {
+    let student = this.students.filter(s => s.id == id)[0];
+    return student
+      ? {id: student.id, name: student.name }
+      : null;
+  }
+
+  addStudent(newStudent: Student) {
+    newStudent.id = this.students.length > 0 
+      ? this.students.map(s => s.id).reduce((p, c) => p < c ? c : p) + 1
+      : 1;
+    this.students.push(newStudent);
+  }
+
+  saveStudent(student: Student) {
+    let oldStudent = this.students.filter(s => s.id == student.id)[0];
+    if (oldStudent) {
+      oldStudent.name = student.name;
+    }
+  }
+
+  deleteStudent(id: number) {
+    let oldStudent = this.students.filter(s => s.id == id)[0];
+    if (oldStudent) {
+      let studentIndex = this.students.indexOf(oldStudent);
+      if (studentIndex >= 0) {
+        this.students.splice(studentIndex, 1);
+      }
+    }
+  }
+}
+
+student.ts: -
+
+export class Student {
+    id: number;
+    name: string;
+
+    static students: Student[] = [
+        { id: 1, name: 'student1'},
+        { id: 2, name: 'student2'},
+        { id: 3, name: 'student3'},
+        { id: 4, name: 'student4'}
+    ];
+}
+
+app.template.html: -
+
+<div class="container-fluid">
+  <h1>Students Maintenance</h1>
+  <router-outlet></router-outlet>
+</div>
+
+student-list.template.html: -
+
+<div class="row">
+  <div class="col-sm-12">
+    <button class="btn btn-primary btn-lg" (click)="add()">
+      Add new student
+    </button>
+  </div>
+</div>
+<h2>List of Students</h2>
+<div class="row" *ngFor="let student of students">
+  <div class="col-sm-8">
+    <h4>{{student.id}}: {{student.name}}</h4>
+  </div>
+  <div class="col-sm-4" style="margin-top: 5px;">
+    <div class="pull-right">
+      <a class="btn btn-warning btn-sm" [routerLink]="['/edit', student.id]">
+        Edit
+      </a>
+      <a class="btn btn-danger btn-sm"  [routerLink]="['/delete', student.id]">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+add-student.template.html: -
+
+<h3>Specify the name of the Student:</h3>
+<div class="row">
+  <div class="col-sm-6">
+    <input #studentNameBox class="form-control input-lg" type="text" 
+      placeholder="student name" 
+      (keyup)="studentName=studentNameBox.value"
+      (keyup.enter)="add()"      
+      />
+  </div>
+</div>
+<div class="row" style="margin-top: 12px;">
+  <div class="col-sm-6">
+    <button class="btn btn-success btn"
+      (click)="add()"
+      [disabled]="!studentName">
+      Add
+    </button>
+    <a class="btn btn-warning btn"
+      routerLink="/list">
+      Cancel
+    </a>
+  </div>
+</div>
+
+edit-student.template.html: -
+
+<h3>Edit the name of the student:</h3>
+<div class="row">
+  <div class="col-sm-6">
+    <input #studentNameBox class="form-control input-lg" type="text"
+      [value]="studentName"
+      placeholder="student name" 
+      (keyup)="studentName=studentNameBox.value"
+      (keyup.enter)="save()" />
+  </div>
+</div>
+<div class="row" style="margin-top: 12px;">
+  <div class="col-sm-6">
+    <button class="btn btn-success btn"
+      (click)="save()"
+      [disabled]="!studentName">
+      Save
+    </button>
+    <a class="btn btn-warning btn"
+      routerLink="/list">
+      Cancel
+    </a>
+  </div>
+</div>
+
+delete-student.template.html: -
+
+<h3>Confirm delete</h3>
+<div class="row">
+  <div class="col-sm-8">
+    <p>
+      Are you sure you want to delete student'{{studentName}}'?
+    </p>
+  </div>
+</div>
+<div class="row" style="margin-top: 12px;">
+  <div class="col-sm-6">
+    <a class="btn btn-success btn"
+     routerLink="/list">
+      No
+    </a>
+    <button class="btn btn-danger btn"
+      (click)="delete()">
+      Yes
+    </button>
+  </div>
+</div>
+
+index.html: -
+
+<html>
+  <head>
+    <base href="/">
+    <title>Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+
+    <link rel="stylesheet" href="assets/stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="assets/stylesheets/font-awesome.css">
+    <link rel="stylesheet" href="assets/stylesheets/styles.css">
+
+    <!-- 1. Load libraries -->
+    <!-- IE required polyfills, in this exact order -->
+    <script src="node_modules/core-js/client/shim.min.js"></script>
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    <script src="node_modules/underscore/underscore.js"></script>
+    
+    <!-- 2. Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+
+
+  </head>
+
+  <!-- 3. Display the application -->
+  <body>
+    <project-app>Loading...</project-app>
+  </body>
+
+</html>
+
+systemjs.config.js: -
+
+/**
+ * System configuration for Angular 2 samples
+ * Adjust as necessary for your application needs.
+ */
+(function(global) {
+  // map tells the System loader where to look for things
+  var map = {
+    'app':                        'app', // 'dist',
+    '@angular':                   'node_modules/@angular',
+    'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+    'rxjs':                       'node_modules/rxjs',
+    'underscore':                 'node_modules/underscore/underscore.js'
+  };
+  // packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':                        { main: 'main.js',  defaultExtension: 'js' },
+    'rxjs':                       { defaultExtension: 'js' },
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+  };
+  var ngPackageNames = [
+    'common',
+    'compiler',
+    'core',
+    'forms',
+    'http',
+    'platform-browser',
+    'platform-browser-dynamic',
+    'router',
+    'router-deprecated',
+    'upgrade',
+  ];
+  // Individual files (~300 requests):
+  function packIndex(pkgName) {
+    packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+  }
+  // Bundled (~40 requests):
+  function packUmd(pkgName) {
+    packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+  }
+  // Most environments should use UMD; some (Karma) need the individual index files
+  var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+  // Add package entries for angular packages
+  ngPackageNames.forEach(setPackageConfig);
+  var config = {
+    map: map,
+    packages: packages
+  };
+  System.config(config);
+})(this);
+
+package.json: -
+
+{
+  "name": "angular2-quickstart",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lite": "lite-server",
+    "postinstall": "typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.5",
+    "@angular/compiler": "2.0.0-rc.5",
+    "@angular/core": "2.0.0-rc.5",
+    "@angular/forms": "0.3.0",
+    "@angular/http": "2.0.0-rc.5",
+    "@angular/platform-browser": "2.0.0-rc.5",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+    "@angular/router": "3.0.0-rc.1",
+    "@angular/router-deprecated": "2.0.0-rc.2",
+    "@angular/upgrade": "2.0.0-rc.5",
+    "@types/underscore": "^1.8.0",
+    "angular2-in-memory-web-api": "0.0.15",
+    "bootstrap": "^3.3.6",
+    "core-js": "^2.4.0",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "systemjs": "0.19.27",
+    "underscore": "^1.8.3",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.2.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4"
+  }
+}
