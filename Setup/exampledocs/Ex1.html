@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://npmcdn.com/@reactivex/rxjs@5.0.0-beta.3/dist/global/Rx.umd.js"></script>
+  <script type="text/javascript">
+	//emit (1,2,3,4,5)
+	const source = Rx.Observable.from([1,2,3,4,5]);
+	//add 10 to each value
+	const example = source.map(val => val + 10);
+	//output: 11,12,13,14,15
+	const subscribe = example.subscribe(val => console.log(val));
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

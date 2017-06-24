@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://npmcdn.com/@reactivex/rxjs@5.0.0-beta.3/dist/global/Rx.umd.js"></script>
+  <script type="text/javascript">
+	
+	//server data
+	const source = Rx.Observable.from([{name: 'student1', age: 30}, {name: 'student2', age: 20},{name: 'student3', age: 25}]);
+	
+	//grab each persons name
+	const example = source.map(person => person.name);
+	
+	//output: 
+	example.subscribe(val => console.log(val));
+
+  </script>
+</head>
+<body>
+
+</body>
+</html>

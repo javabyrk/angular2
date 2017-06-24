@@ -1,0 +1,24 @@
+<h3>Specify the name of the Student:</h3>
+<form>
+  <div class="row">
+    <div class="col-sm-6">
+      <input class="form-control input-lg" type="text" 
+        placeholder="student name" 
+        [(ngModel)]="studentName" name="studentName"      
+        />
+    </div>
+  </div>
+  <div class="row" style="margin-top: 12px;">
+    <div class="col-sm-6">
+      <button class="btn btn-success btn"
+        (click)="add()"
+        [disabled]="!studentName">
+        Add
+      </button>
+      <a class="btn btn-warning btn"
+        routerLink="/list">
+        Cancel
+      </a>
+    </div>
+  </div>
+</form>

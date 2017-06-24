@@ -1,0 +1,26 @@
+<h3>Specify the name of the Student:</h3>
+<form novalidate (submit)="add()">
+  <div class="row">
+    <div class="col-sm-6">
+      <input class="form-control input-lg" [class.has-error]="studentNameCtrl.invalid" type="text" 
+        placeholder="student name" #studentNameCtrl="ngModel" id="name"
+        [(ngModel)]="student.name" name="name" required  minlength="2"    
+        />
+        <span *ngIf="studentNameCtrl.dirty&&studentNameCtrl.errors.required" class="help-block">
+          Please specify a Student name.
+        </span>
+        <span *ngIf="studentNameCtrl.dirty&&studentNameCtrl.errors.minlength" class="help-block">
+          Student name should contains atleast 2 characters.
+        </span>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 12px;">
+    <div class="col-sm-6">
+      <input class="btn btn-success btn" type="submit" [disabled]="studentNameCtrl.invalid" value="Add"/>
+      <a class="btn btn-warning btn"
+        routerLink="/list">
+        Cancel
+      </a>
+    </div>
+  </div>
+</form>

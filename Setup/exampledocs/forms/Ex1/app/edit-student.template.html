@@ -1,0 +1,23 @@
+<h3>Edit the name of the student:</h3>
+<div class="row">
+  <div class="col-sm-6">
+    <input #studentNameBox class="form-control input-lg" type="text"
+      [value]="studentName"
+      placeholder="student name" 
+      (keyup)="studentName=studentNameBox.value"
+      (keyup.enter)="save()" />
+  </div>
+</div>
+<div class="row" style="margin-top: 12px;">
+  <div class="col-sm-6">
+    <button class="btn btn-success btn"
+      (click)="save()"
+      [disabled]="!studentName">
+      Save
+    </button>
+    <a class="btn btn-warning btn"
+      routerLink="/list">
+      Cancel
+    </a>
+  </div>
+</div>

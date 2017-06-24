@@ -1,0 +1,24 @@
+<h3>Specify the name of the Student:</h3>
+<form (ngSubmit)="add()" [formGroup]="studentForm">
+  <div class="row">
+    <div class="col-sm-6">
+      <input class="form-control input-lg" id="name" type="text" 
+        placeholder="student name" formControlName="name"/>
+        <span *ngIf="studentForm.controls['name'].dirty&&studentForm.controls['name'].errors.required" class="help-block">
+          Please specify a student name.
+        </span>
+         <span *ngIf="studentForm.controls['name'].dirty&&studentForm.controls['name'].errors.minlength" class="help-block">
+          minlength error message
+        </span>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 12px;">
+    <div class="col-sm-6">
+      <input class="btn btn-success btn" type="submit" [disabled]="studentForm.controls['name'].invalid" value="Add"/>
+      <a class="btn btn-warning btn"
+        routerLink="/list">
+        Cancel
+      </a>
+    </div>
+  </div>
+</form>
