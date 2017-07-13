@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <h1>Students Maintenance</h1>
+  <div [ngSwitch]="currentView">
+    <student-list-view *ngSwitchDefault
+      (onAdd)="navigateTo('add')"
+      (onEdit)="studentId=$event; navigateTo('edit')"
+      (onDelete)="studentId=$event; navigateTo('delete')">
+    </student-list-view>
+    <add-student-view *ngSwitchCase="'add'"
+      (onClosed)="navigateTo('list')">
+    </add-student-view>
+    <edit-student-view *ngSwitchCase="'edit'"
+      [studentId]="studentId"
+      (onClosed)="navigateTo('list')">
+    </edit-student-view>
+    <delete-student-view *ngSwitchCase="'delete'">
+    </delete-student-view>
+</div>
