@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <h1>Students Maintenance</h1>
+  <student-list-view *ngIf="currentView == 'list'"
+    [students]="students"
+    (onAdd)="startAdd()">
+  </student-list-view>
+  <add-student-view *ngIf="currentView == 'add'"
+    [studentId] = "newStudentId"
+    (onAdded)="studentAdded($event)"
+    (onCancel)="navigateTo('list')">
+  </add-student-view>
+</div>

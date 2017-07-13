@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <h1>Students Maintenance</h1>
+  <div [ngSwitch]="currentView">
+    <template ngSwitchDefault>
+      <student-list-view
+        [students]="students"
+        (onAdd)="startAdd()"
+        (onEdit)="startEdit($event)"
+        (onDelete)="startDelete($event)">
+      </student-list-view>
+    </template>
+    <template ngSwitchCase="add">
+      <add-student-view
+        [studentId] = "newStudentId"
+        (onAdded)="studentAdded($event)"
+        (onCancel)="navigateTo('list')">
+      </add-student-view>
+    </template>
+    <template ngSwitchCase="edit">
+      <edit-student-view
+        [student] = "currentStudent"
+        (onSaved)="studentSaved($event)"
+        (onCancel)="navigateTo('list')">
+      </edit-student-view>
+    </template>
+    <template ngSwitchCase="delete">  
+      <delete-student-view
+        [student] = "currentStudent"
+        (onDeleted)="studentDeleted($event)"
+        (onCancel)="navigateTo('list')">
+      </delete-student-view>
+    </template>
+</div>
