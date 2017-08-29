@@ -1,0 +1,69 @@
+import { NgModule } from '@angular/core';
+
+import { BrowserModule } from "@angular/platform-browser";
+
+import { AppComponent } from './app.component';
+
+import { StudentListComponent } from "./student-list.component";
+
+@NgModule({
+    imports: [BrowserModule],
+    exports: [],
+    declarations: [AppComponent,StudentListComponent],
+    bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+-- app.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'app-root',
+    template: '<student-list></student-list>'
+})
+
+export class AppComponent implements OnInit {
+    constructor() { }
+
+    ngOnInit() { }
+}
+
+--student-list.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'student-list',
+    templateUrl: 'student-list.component.html'
+})
+
+export class StudentListComponent implements OnInit {
+    
+    students;
+
+    constructor() { 
+        this.students = [
+            {id:1,"name":"student1"},
+            {id:2,"name":"student2"},
+            {id:3,"name":"student3"},
+            {id:4,"name":"student4"},
+        ];
+    }
+
+    ngOnInit() { }
+}
+
+-- student-list.component.html
+
+<table>
+
+    <tr *ngFor="let student of students">
+
+        <Td>{{student.id}}</Td>
+        <Td>{{student.name}}</Td>
+    </tr>
+
+
+</table>
