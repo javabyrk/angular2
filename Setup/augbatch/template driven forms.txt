@@ -1,0 +1,96 @@
+--app.module.ts
+
+import { NgModule } from '@angular/core';
+
+import { BrowserModule } from "@angular/platform-browser";
+
+import { FormsModule } from "@angular/forms";
+
+import { AppComponent } from './app.component';
+
+import { StudentFormComponent } from "./student-form.component";
+
+@NgModule({
+    imports: [BrowserModule,FormsModule],
+    declarations: [AppComponent,StudentFormComponent],
+    bootstrap:[AppComponent]
+})
+export class AppModule { }
+
+--app.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'project-root',
+    templateUrl: './app.component.html'
+})
+
+export class AppComponent implements OnInit {
+    constructor() { }
+
+    ngOnInit() { }
+}
+
+-- app.component.html
+
+<student-form></student-form>
+
+-- student.ts
+
+export class Student {
+    id:number;
+
+    name:String;
+
+}
+
+-- student-form.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+import { Student } from "./student";
+
+@Component({
+    selector: 'student-form',
+    templateUrl: 'student-form.component.html'
+})
+
+export class StudentFormComponent implements OnInit {
+   
+    student : Student;
+    
+    constructor() { }
+
+    ngOnInit() {
+        this.student = new Student();
+     }
+
+     m1(){
+         console.log(this.student);
+     }
+}
+
+-- student-form.component.html
+
+<form #studentform="ngForm" novalidate (submit)="m1();">
+
+    student id <input type="text" required name="id" [(ngModel)]="student.id" #idctrl="ngModel"/>
+    
+    <span *ngIf="idctrl.touched&&idctrl.invalid">
+        id is required
+    </span>
+    
+    <br/>
+    student name <input type="text" required minlength="4" name="name" [(ngModel)]="student.name" #namectrl="ngModel"/>
+    <span *ngIf="namectrl.touched&&namectrl.errors&&namectrl.errors.required">
+        name is required
+    </span>
+    <span *ngIf="namectrl.touched&&namectrl.errors&&namectrl.errors.minlength">
+        minlength error message
+    </span>
+    
+    <br/>
+    <input type="submit" value="submit" [disabled]="studentform.invalid"/>
+
+</form>
