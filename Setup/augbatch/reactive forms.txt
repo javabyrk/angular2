@@ -1,0 +1,126 @@
+--
+import { NgModule } from '@angular/core';
+
+import { BrowserModule } from "@angular/platform-browser";
+
+import { ReactiveFormsModule } from "@angular/forms";
+
+import { StudentFormComponent } from "./student-form.component";
+
+import { StudentListComponent } from "./student-list.component";
+
+import { AppComponent } from './App.component';
+
+import { StudentService } from "./student.service";
+
+@NgModule({
+    imports: [BrowserModule,ReactiveFormsModule],
+    exports: [],
+    declarations: [AppComponent,StudentFormComponent,StudentListComponent],
+    providers:[StudentService],
+    bootstrap:[AppComponent]
+})
+export class AppModule { }
+
+--
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'project-root',
+    templateUrl: 'app.component.html'
+})
+
+export class AppComponent implements OnInit {
+    constructor() { }
+
+    ngOnInit() { }
+}
+
+--app.component.html
+
+<student-form></student-form>
+
+-- student-form.component
+
+import { Component, OnInit,Input } from '@angular/core';
+
+import { FormGroup,FormControl,Validators } from "@angular/forms";
+
+import { StudentService } from "./student.service";
+
+import { Student } from "./student";
+
+@Component({
+    moduleId: module.id,
+    selector: 'student-form',
+    templateUrl: 'student-form.component.html'
+})
+
+export class StudentFormComponent implements OnInit {
+    
+    student;
+
+    @Input() studentForm:FormGroup;
+
+    constructor(private studentService:StudentService) { }
+
+    ngOnInit() { 
+        this.student = new Student();
+
+        this.studentForm = new FormGroup({
+            studentid:new FormControl(this.student.id),
+            studentname:new FormControl(this.student.name,[Validators.required,Validators.minLength(2)])
+        });
+    }
+
+    m1(){
+        this.studentService.insertStudent(this.studentForm.value);
+    }
+}
+
+-- student-form.component.html
+
+<form [formGroup]="studentForm" (submit)="m1();">
+
+    id <input type="text" formControlName="studentid"/><br/>
+    name <input type="text" formControlName="studentname"/><br/>
+    <input type="submit" value="submit" [disabled]="studentForm.invalid"/>
+</form>
+
+-- 
+
+import { Component, OnInit } from '@angular/core';
+
+import { StudentService } from "./student.service";
+
+@Component({
+    selector: 'student-list',
+    template: '<table><tr *ngFor="let student of students"><td>{{student.id}}</td><td>{{student.name}}</td></tr></table>'
+})
+
+export class StudentListComponent implements OnInit {
+    
+    students;
+
+    constructor(private studentService:StudentService) { }
+
+    ngOnInit() { 
+        console.log("test1");
+        this.students = this.studentService.getStudents();
+        console.log(this.students);
+        console.log("test2");
+    }
+
+}
+
+--
+
+/**
+ * name
+ */
+export class Student {
+    id : number;
+    name : string;
+}
+
