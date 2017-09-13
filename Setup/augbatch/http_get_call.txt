@@ -1,0 +1,97 @@
+-- app.module.ts
+
+import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import { HttpModule } from "@angular/http";
+import {AppComponent} from './app.component';
+import { OwnersListComponent } from "./owners-list.component";
+import { OwnerService } from "./owner.service";
+@NgModule({
+    imports: [BrowserModule,HttpModule],
+    exports: [],
+    declarations: [AppComponent,OwnersListComponent],
+    providers:[OwnerService],
+    bootstrap:[AppComponent]
+})
+export class AppModule { }
+
+-- app.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+    selector: 'project-root',
+    templateUrl: 'app.component.html'
+})
+
+export class AppComponent implements OnInit {
+    constructor() { }
+
+    ngOnInit() { }
+}
+
+-- app.component.html
+
+<owners-list></owners-list>
+
+-- owners-list.component.ts
+
+import { Component, OnInit } from '@angular/core';
+
+import { Owner } from "./owner";
+
+import { OwnerService } from "./owner.service";
+
+@Component({
+    moduleId: module.id,
+    selector: 'owners-list',
+    template: `<table>
+                <tr *ngFor="let owner of owners">
+                <td>{{owner.id}}</td>
+                <td>{{owner.firstName}}</td>
+                <td>{{owner.lastName}}</td>
+                <td>{{owner.city}}</td>
+                </tr>
+                </table>`
+})
+
+export class OwnersListComponent implements OnInit {
+    owners:Owner[];
+    constructor(private ownerService:OwnerService) { }
+
+    ngOnInit() {
+        this.ownerService.getOwners().subscribe(
+            (serverdata) => this.owners = serverdata,
+            (error)=>{
+                console.log(error);
+            }
+        )
+     }
+}
+
+-- owner.service.ts
+
+import { Injectable } from '@angular/core';
+import { Http } from "@angular/http";
+import {Observable} from 'rxjs';
+import 'rxjs/add/operator/map';
+@Injectable()
+export class OwnerService {
+
+    constructor(private http: Http) { }
+
+    getOwners(){
+       return this.http.get("http://localhost:8080/petclinic/api/owners").map((response) => response.json())
+    }
+}
+
+-- owner.ts
+
+export class Owner {
+  id: number;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  telephone: string;
+}
