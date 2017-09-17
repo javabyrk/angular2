@@ -1,0 +1,9 @@
+<p>{{message}}</p>
+
+<button (click)="m1('students');">students</button>
+<button (click)="m1('owners');">owners</button>
+<br/>
+ <div *ngSwitch="currentPage">
+    <student-list *ngSwitchCase='students'></student-list>
+    <owner-list *ngSwitchCase='owners'></owner-list>
+ </div>

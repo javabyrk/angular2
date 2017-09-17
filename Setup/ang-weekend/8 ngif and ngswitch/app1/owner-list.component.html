@@ -1,0 +1,10 @@
+<button (click)="load()">Load</button>
+<table>
+        <tr><td>First Name</td><td>Last  Name</td><td>City</td></tr>
+        <tr *ngFor="let owner of owners">
+            <td>{{owner.firstName}}</td>
+            <td>{{owner.lastName}}</td>
+            <td>{{owner.city}}</td>
+            <td>{{owner|json}}</td>
+        </tr>
+</table>
