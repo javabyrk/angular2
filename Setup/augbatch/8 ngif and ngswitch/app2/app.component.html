@@ -1,0 +1,7 @@
+<p>{{message}}</p>
+
+<button (click)="m1('students');">students</button>
+<button (click)="m1('owners');">owners</button>
+<br/>
+<student-list *ngIf="currentPage=='students'"></student-list>
+<owner-list *ngIf="currentPage=='owners'"></owner-list>
