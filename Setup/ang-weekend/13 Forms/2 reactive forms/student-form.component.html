@@ -1,0 +1,13 @@
+<form [formGroup]="studentForm" (submit)="verify();">
+
+    id <input type="text" formControlName ="id"/>
+    <span *ngIf ="studentForm.controls['id'].invalid&&studentForm.controls['id'].errors&&studentForm.controls['id'].errors.required">
+        please provide id value
+    </span>
+    <span *ngIf ="studentForm.controls['id'].invalid&&studentForm.controls['id'].errors&&studentForm.controls['id'].errors.minlength">
+        please provide atleast 4 char
+    </span>
+    <br/>
+    name <input type="text" formControlName ="name"/><br/>
+    <button [disabled]="studentForm.invalid">Submit</button>
+</form>
