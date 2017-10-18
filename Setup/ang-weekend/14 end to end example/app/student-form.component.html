@@ -1,0 +1,10 @@
+<form #studentForm="ngForm">
+
+
+        Id<input type="text" name="id" [(ngModel)]="student.id" required #idctrl="ngModel" (change)="verify();"/>{{status}}<br/>
+        Name<input type="text" name="name" [(ngModel)]="student.name"/><br/>
+        <button *ngIf="studentId==0" (click)="insert();" [disabled]="studentForm.invalid">Insert</button>
+        <button *ngIf="studentId!=0" (click)="update();" [disabled]="studentForm.invalid">Update</button>
+         <a [routerLink]="['/list']">Cancel</a>
+
+</form>
