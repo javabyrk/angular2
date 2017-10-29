@@ -1,0 +1,10 @@
+<button (click)="load();">Load</button>
+<a [routerLink]="['/insert']">Insert</a>
+<a [routerLink]="['/delete']">Delete</a>
+<table>
+
+    <tr><td>id</td><td>name</td><td>email</td></tr>
+
+    <tr *ngFor="let student of students"><td>{{student.id}}</td><td>{{student.name}}</td><td>{{student.email}}</td></tr>
+
+</table>

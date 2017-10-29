@@ -1,0 +1,7 @@
+<form>
+    id <input type="text" name="id" [(ngModel)]="student.id"/><br/>
+    name <input type="text" name="name" [(ngModel)]="student.name"/><br/>
+    email <input type="text" name="email" [(ngModel)]="student.email"/><br/>
+    <button (click)="insert();">Submit</button>
+    <a [routerLink]="['/list']">Cancel</a>
+</form>
