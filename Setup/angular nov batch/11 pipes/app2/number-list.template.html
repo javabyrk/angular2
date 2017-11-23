@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <h1>My Numbers</h1>
+  <span *ngFor="let num of numbers | slice:start:end"
+    class="number">
+    {{num}}
+  </span>
+  <button (click)="previous();" [disabled]="start-1<1"><<</button>
+  <button (click)="next();" [disabled]="end+1>100">>></button>
+</div>
