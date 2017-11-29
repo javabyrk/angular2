@@ -1,0 +1,8 @@
+<form [formGroup]="studentForm">
+
+    Id <input type="text" name="id" formControlName="id"/> <br/>
+    
+    Name <input type="text" name="name" formControlName="name"/><br/>
+
+    <button (click)="register();" [disabled]="studentForm.invalid">Register</button>
+</form>
