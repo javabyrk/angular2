@@ -1,0 +1,12 @@
+<form [formGroup]="studentForm">
+
+    Id <input type="text" formControlName="id"/>
+
+    <span *ngIf="studentForm.controls['id'].touched&&studentForm.controls['id'].errors.required">
+        please enter id value
+    </span><br/>
+
+    Name <input type="text" formControlName="name" /><br/>
+
+    <button (click)="register();" [disabled]="studentForm.invalid">Register</button>
+</form>
