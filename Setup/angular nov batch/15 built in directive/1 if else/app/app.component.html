@@ -1,0 +1,10 @@
+<div *ngIf="loginPage;else elseBlock">
+	<form>
+       Email <input type="text" name="email"/>
+
+       Password <input type="password" name="password"/>
+       <button (click)="login();">login</button>
+    </form>
+	<button (click)="hideLogin();">close</button>
+</div>
+<ng-template #elseBlock>Welcome<button (click)="showLogin();">login</button></ng-template>

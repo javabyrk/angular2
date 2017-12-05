@@ -1,0 +1,11 @@
+<br/><b>Example-2:</b><br/><br/>
+<div>Enter Age:	<input type="text" [(ngModel)] = 'age'> </div> <br/>
+{{age}}
+<br/>
+<div *ngIf="age > 17; then myThenBlock; else myElseBlock"> </div>
+<ng-template #myThenBlock>
+  <div>   <b>Eligible to vote.</b>   </div> 
+</ng-template>
+<ng-template #myElseBlock>
+  <div>   <b>not Eligible to vote.</b>   </div> 
+</ng-template>

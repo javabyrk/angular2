@@ -6,6 +6,6 @@ import {Student} from './student';
   templateUrl: 'student-list.template.html'
 })
 export class StudentListComponent {
-  user = {'dateFormat':'dd/MM/yyyy'};
+  user = {'currenyFormat':'INR',dateFormat':'dd/MM/yyyy'};
   students = Student.students;
 }
