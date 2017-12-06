@@ -1,0 +1,14 @@
+<form #studentForm="ngForm" [ngFormOptions]="{updateOn: 'submit'}" (ngSubmit)="register();">
+
+    Id <input type="text" minlength="3" name="id" #idCtrl="ngModel" [(ngModel)]="student.id"/>
+
+    <span *ngIf="idCtrl.errors&&idCtrl.errors.minlength">
+        atleast 3 charcters should enter
+    </span>
+   
+    <br/>
+
+    Name <input type="text" name="name" #nameCtrl="ngModel" [(ngModel)]="student.name"/><br/>
+
+    <input type="submit" value="Register" />
+</form>
