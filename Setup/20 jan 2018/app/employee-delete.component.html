@@ -1,0 +1,7 @@
+Enter Id 
+<input type="text" #idctrl name="id" (change)="loadEmployee(idctrl.value);"/><br/>
+Name- {{employee.name}} <br/>
+Salary - {{employee.salary}} <br/>
+
+<button (click)="deleteEmployee(idctrl.value)">Delete</button>
+
