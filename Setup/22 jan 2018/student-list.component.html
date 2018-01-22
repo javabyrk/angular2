@@ -1,0 +1,11 @@
+<button (click)="load();">Load</button>
+<table>
+    <tr *ngFor="let student of students">
+        <td>
+            {{student.id}}
+        </td>
+        <td>
+            {{student.name}}
+        </td>
+    </tr>
+</table>
