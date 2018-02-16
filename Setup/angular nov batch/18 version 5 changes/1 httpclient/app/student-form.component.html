@@ -1,8 +1,0 @@
-<form>
-    id <input type="text" name="id" [(ngModel)]="student.id"/><br/>
-    name <input type="text" name="name" [(ngModel)]="student.name"/><br/>
-    email <input type="text" name="email" [(ngModel)]="student.email"/><br/>
-    <button *ngIf="studentId==-1" (click)="insert();">Insert</button>
-    <button *ngIf="studentId!=-1" (click)="update();">Update</button>
-    <a [routerLink]="['/list']">Cancel</a>
-</form>
