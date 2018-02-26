@@ -1,0 +1,12 @@
+<table>
+    <tr *ngFor="let student of students">
+        <td>{{student.id}}</td>
+        <td>{{student.name|lowercase|uppercase}}</td>
+        <td>{{student.pocketMoney|currency:'EUR'}}</td>
+        <td>{{student.jeeScore/300 | number: '2.2-3'}}</td>
+        <td>{{student.jeeScore/300 | percent: '2.2-3'}}</td>
+        <td>{{student|json}}</td>
+        <td><a [routerLink]="['/update',student.id]">Update</a></td>
+        <td><a [routerLink]="['/delete',student.id]">delete</a></td>
+    </tr>
+</table>

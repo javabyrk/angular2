@@ -1,0 +1,9 @@
+<form>
+
+    Id <input type="text" name="id" [(ngModel)]="student.id" [readOnly]="abc"/><br/>
+    Name <input type="text" name="name" [(ngModel)]="student.name"/><br/>
+
+    <button (click)="save();" *ngIf="insertion==true">Save</button>
+    <button (click)="update();" *ngIf="insertion==false">Update</button>
+    <button (click)="cancel();">Cancel</button>
+</form>
