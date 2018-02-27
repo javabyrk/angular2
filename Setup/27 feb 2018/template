@@ -1,0 +1,13 @@
+input select ta -- formcontrol
+
+form 	-- formgroup
+
+formcontrol,formgroup -- 6 states
+
+errors object provides detail information about validation problems.
+
+template reference variables
+
+#vn = "ngModel" --> formcontrol
+
+#vn = "ngForm"  --> formgroup

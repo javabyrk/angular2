@@ -1,0 +1,29 @@
+<form #studentForm="ngForm">
+
+    Id <input type="text" name="id" minlength="3" required [(ngModel)]="student.id" #idctrl="ngModel" [readOnly]="abc"/>
+    
+    <span *ngIf="idctrl.touched&&idctrl.invalid">
+            <span *ngIf="idctrl.errors.required">
+               please provide some value
+            </span>
+            <span *ngIf="idctrl.errors.minlength">
+               minimum 3 characters required
+            </span>    
+    </span>
+    
+    
+    <br/>
+    Name <input type="text" name="name"  [(ngModel)]="student.name" /><br/>
+
+    <button (click)="save();" *ngIf="insertion==true" [disabled]="studentForm.invalid">Save</button>
+    <button (click)="update();" *ngIf="insertion==false">Update</button>
+    <button (click)="cancel();">Cancel</button>
+</form>
+
+
+id untouched status:{{idctrl.untouched}}<br/>
+id touched status:{{idctrl.touched}}<br/>
+id pristine status:{{idctrl.pristine}}<br/>
+id dirty status:{{idctrl.dirty}}<br/>
+id valid status:{{idctrl.valid}}<br/>
+id invalid status:{{idctrl.invalid}}<br/>

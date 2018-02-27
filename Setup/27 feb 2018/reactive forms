@@ -1,0 +1,16 @@
+studentForm:FormGroup;
+
+
+this.studentForm = new FormGroup({
+							id:new FormControl();
+							name:new FormControl();		
+						});
+						
+new FormControl("",[Validators.required,Validators.minLength(3)])
+
+
+formControlName attr for input select ta
+
+[formGroup]=studentForm for form tag
+
+studentForm.controls['id'].
