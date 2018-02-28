@@ -1,0 +1,29 @@
+
+@Directive({selector: '[abc]'})
+class ABC{
+	constructor(private element:ElementRef){
+	
+	}
+}
+
+declarations:[..,ABC]
+
+<span [abc]>
+<div [abc]>
+
+
+@HostListener -- to listen to the element events
+
+@Input -- to read element attributes
+
+
+
+
+
+
+
+
+
+
+
+
