@@ -1,8 +1,0 @@
-<table>
-    <tr *ngFor="let student of students|slice:start:end">
-        <td>{{student.id}}</td>
-        <td>{{student.name|lowercase|uppercase}}</td>
-    </tr>
-</table>
-<button (click)="previous();" [disabled]="start<=0"><<</button>
-<button (click)="next();" [disabled]="end>=students.length">>></button>
